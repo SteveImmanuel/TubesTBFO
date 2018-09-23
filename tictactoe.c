@@ -107,9 +107,21 @@ void drawboard(char string[15],int rotation)
 			temp[i]=string[i];
 		}
 	}	
-	for(i=1;i<=3;i++){
-		for(j=1;j<=3;j++){
-			printf("%c",temp[(3*(i-1)+j)-1]);
+	for(i=1;i<=6;i++){
+		for(j=1;j<=11;j++){
+			if(j==4||j==8){
+				printf("|");
+			}else if(i==1||i==3||i==5){
+				if(j==2||j==6||j==10){
+					printf("%c",temp[(((j+2)/4)+((i-1)/2)*3)-1]);
+				}else{
+					printf(" ");
+				}
+			}else if(i==2||i==4){
+				printf("_");
+			}else{
+				printf(" ");
+			}
 		}
 		printf("\n");
 	}
@@ -141,4 +153,13 @@ sentence transtate(sentence state,int input,matrixofstring matrix_trans)
 	int i=findstate(str(state),matrix_trans,totalstate);
 	strcpy(str(temp),Elmt(matrix_trans,i,input));
 	return temp;
+}
+
+void drawtemp(sentence state, int input, int rotation)
+//menggambar state sementara setelah player memilih tempat kosong
+{
+	char temp[15];
+	strcpy(temp,str(state));
+	temp[input-1]='X';
+	drawboard(temp,rotation);
 }

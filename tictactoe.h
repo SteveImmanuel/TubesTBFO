@@ -37,6 +37,9 @@ int rotateinput(int input,int rotation);
 void drawboard(char string[15],int rotation);
 //menggambar board papan dari string;
 
+void drawtemp(sentence state, int input, int rotation);
+//menggambar state sementara setelah player memilih tempat kosong
+
 int findstate(char string[15],matrixofstring matrix_trans,int total);
 //mencari string dalam trantition table
 

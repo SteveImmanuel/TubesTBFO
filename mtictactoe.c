@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include "tictactoe.h"
+#include <stdlib.h>
+#include <time.h>
 
 int main()
 {
 	FILE *config;
 	matrixofstring matrix_trans,finalstate;
-	char buffer[200];
+	char buffer[200],temp[15];
 	sentence state,nstate;//state untuk state sekarang, nstate untuk state berikutnya
 	int k,check,input,rotation=0,istate;
 	config =fopen("config.txt","r");//load file konfigurasi
@@ -25,9 +27,9 @@ int main()
 	}while(check);
 	k=1;
 	do{
-		fgets (buffer, 1000, config);//copy trantition table ke matrix_trans
+		fgets (buffer, 1000, config);//copy final states ke finalstate
 		check=strcmp(buffer,"//START STATES\n");
-		if ((check)&&strcmp(buffer,"//FINAL STATES\n")) {//pilah bagian trantition table dan yang bukan
+		if ((check)&&strcmp(buffer,"//FINAL STATES\n")) {//pilah bagian final states dan yang bukan
 			copystring(buffer,&finalstate,k);
 			k++;
 		}
@@ -36,6 +38,8 @@ int main()
 	printf("1. You play first.\n2. Computer plays first.\n");scanf("%d",&input);
 	if (input==1){//player pertama, pergi ke state 13
 		strcpy(str(state),Elmt(matrix_trans,13,0));//load state dan nstate
+		srand(time(0));
+		rotation=(rand()%4)*90;
 	}else{//cpu pertama, pergi ke state 1
 		strcpy(str(state),Elmt(matrix_trans,1,0));//load state dan nstate
 		drawboard(str(state),rotation);//jika cpu pertama, harus ditentukan ke mana player memilih agar tahu rotasinya
@@ -45,6 +49,7 @@ int main()
 		else if (input==8||input==9) rotation=180;
 		input=rotateinput(input,rotation);
 		printf("rotated:%d\n",input);
+		drawtemp(state, input,rotation);
 		state=transtate(state,input,matrix_trans);
 	}
 	
@@ -53,13 +58,13 @@ int main()
 	do{
 		scanf("%d",&input);
 		input=rotateinput(input,rotation);
-		//printf("rotated:%d\n",input);
 		nstate=transtate(state,input,matrix_trans);
 		istate=findstate(str(nstate),finalstate,66);
 		printf("%d\n",istate);
 		if (eqstring(str(nstate),str(state),size)){
 			printf("You cannot pick filled place\n");
 		}else if(istate!=-1){
+			drawtemp(state, input,rotation);
 			state=transtate(state,input,matrix_trans);
 			if (str(state)[size]=='w'){
 				printf("you lose\n");
@@ -69,17 +74,12 @@ int main()
 				printf("ini error\n");
 			}
 		}else{
+			drawtemp(state, input,rotation);
 			state=transtate(state,input,matrix_trans);
 		}
 		drawboard(str(state),rotation);
 	}while(istate==-1);
-	
-
-
-
-	
-
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	fclose(config);
 		return 0;
 }
