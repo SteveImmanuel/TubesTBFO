@@ -7,9 +7,10 @@ int main()
 {
 	FILE *config;
 	matrixofstring matrix_trans,finalstate;
-	char buffer[200],temp[15];
+	char buffer[200],temp[15]="----x----";
 	sentence state,nstate;//state untuk state sekarang, nstate untuk state berikutnya
-	int k,check,input,rotation=0,istate;
+	int k,check,input=0,rotation=0,istate,end=0,p_score=0,c_score=0;
+
 	config =fopen("config.txt","r");//load file konfigurasi
 	if (!config) {
 		printf("Config file not found!\n");
@@ -35,50 +36,70 @@ int main()
 		}
 	}while(check);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	printf("1. You play first.\n2. Computer plays first.\n");scanf("%d",&input);
-	if (input==1){//player pertama, pergi ke state 13
-		strcpy(str(state),Elmt(matrix_trans,13,0));//load state dan nstate
-		srand(time(0));
-		rotation=(rand()%4)*90;
-	}else{//cpu pertama, pergi ke state 1
-		strcpy(str(state),Elmt(matrix_trans,1,0));//load state dan nstate
-		drawboard(str(state),rotation);//jika cpu pertama, harus ditentukan ke mana player memilih agar tahu rotasinya
-		scanf("%d",&input);
-		if (input==3||input==6) rotation=90;
-		else if (input==4||input==7) rotation=270;
-		else if (input==8||input==9) rotation=180;
-		input=rotateinput(input,rotation);
-		printf("rotated:%d\n",input);
-		drawtemp(state, input,rotation);
-		state=transtate(state,input,matrix_trans);
-	}
-	
-	drawboard(str(state),rotation);
-	
-	do{
-		scanf("%d",&input);
-		input=rotateinput(input,rotation);
-		nstate=transtate(state,input,matrix_trans);
-		istate=findstate(str(nstate),finalstate,66);
-		printf("%d\n",istate);
-		if (eqstring(str(nstate),str(state),size)){
-			printf("You cannot pick filled place\n");
-		}else if(istate!=-1){
-			drawtemp(state, input,rotation);
-			state=transtate(state,input,matrix_trans);
-			if (str(state)[size]=='w'){
-				printf("you lose\n");
-			}else if (str(state)[size]=='d'){
-				printf("round draw\n");
-			}else{
-				printf("ini error\n");
+	while(input!=4){
+		printf("\nTIC TAC TOE\n\n");
+		printf("Your Score : %d\nComputer's Score : %d\n\n",p_score,c_score);
+		printf("Option :\n1. You play first\n2. Computer plays first\n3. Help\n4. Exit\n");
+		printf("Your input : ");scanf("%d",&input);
+			if(input==1||input==2){
+				if (input==1){//player pertama, pergi ke state ke-13
+					strcpy(str(state),Elmt(matrix_trans,13,0));//load state
+					srand(time(0));
+					rotation=(rand()%4)*90;
+					printf("Since you choose to go first, you automatically choose the middle.\n");
+					drawboard(temp,rotation);
+				}else{//cpu pertama, pergi ke state ke-1
+					strcpy(str(state),Elmt(matrix_trans,1,0));//load state
+					printf("\nComputer's turn.\n");
+					drawboard(str(state),rotation);//jika cpu pertama, harus ditentukan ke mana player memilih agar tahu rotasinya
+					printf("Your turn.\nYour input : ");
+					scanf("%d",&input);
+					if (input==3||input==6) rotation=90;
+					else if (input==4||input==7) rotation=270;
+					else if (input==8||input==9) rotation=180;
+					input=rotateinput(input,rotation);
+					drawtemp(state, input,rotation);
+					state=transtate(state,input,matrix_trans);
+				}
+				printf("\nComputer's turn.\n");
+				drawboard(str(state),rotation);
+				do{
+					printf("Your turn. Your input : ");
+					scanf("%d",&input);
+					input=rotateinput(input,rotation);
+					nstate=transtate(state,input,matrix_trans);
+					istate=findstate(str(nstate),finalstate,66);
+					if (eqstring(str(nstate),str(state),size)){
+						printf("You cannot pick filled place.\n");
+					}else if(istate!=-1){
+						drawtemp(state, input,rotation);
+						state=transtate(state,input,matrix_trans);
+						if (str(state)[size]=='w'){
+							end=1;
+							c_score++;
+						}else if (str(state)[size]=='d'){
+							end=2;
+						}else{
+							printf("error end state not found\n");
+						}
+					}else{
+						drawtemp(state, input,rotation);
+						state=transtate(state,input,matrix_trans);
+					}
+					printf("\nComputer's turn.\n");
+					drawboard(str(state),rotation);
+					if(end==1){
+						printf("You lose.\n");
+					}else if(end==2){
+						printf("Round draw.\n");
+					}
+				}while(istate==-1);
+			}else if(input==3){
+				printf("This is standard TIC TAC TOE games. However, should you \nchoose to go first, you must choose the middle first.\n");
+			}else if(input!=4){
+				printf("Wrong input.");
 			}
-		}else{
-			drawtemp(state, input,rotation);
-			state=transtate(state,input,matrix_trans);
-		}
-		drawboard(str(state),rotation);
-	}while(istate==-1);
+	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	fclose(config);
 		return 0;

@@ -125,6 +125,7 @@ void drawboard(char string[15],int rotation)
 		}
 		printf("\n");
 	}
+	printf("\n");
 }
 
 int findstate(char string[15],matrixofstring matrix_trans,int total)
