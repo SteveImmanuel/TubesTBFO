@@ -13,10 +13,17 @@ typedef struct{
 }sentence;
 
 typedef struct{
+	sentence array[10];
+	int n;
+}arrayofstring;
+
+typedef struct{
 	sentence matrix[110][15]; 
 }matrixofstring;
 
 #define Elmt(M,i,j) ((M).matrix[(i)][(j)]).strg
+#define Elarr(M,i) ((M).array[(i)]).strg
+#define Neffarr(M) (M).n
 #define str(s) (s).strg
 
 void printstring(char string[15],int length);
@@ -48,5 +55,14 @@ sentence transtate(sentence state,int input,matrixofstring matrix_trans);
 
 void getinput(int* input,int min,int max);
 //menerima input valid yaitu dari rentang min hingga max
+
+void printliststate(arrayofstring liststate);
+//mengeprint semua state di liststate
+
+void addtoliststate(arrayofstring *liststate, char state[15]);
+//menambahkan state ke list state
+
+void eraseliststate(arrayofstring *liststate);
+//mendelete semua elemen liststate
 
 #endif

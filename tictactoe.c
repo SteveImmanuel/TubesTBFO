@@ -180,3 +180,25 @@ void getinput(int* input,int min,int max)
 		}
 	}while(stop);
 }
+
+void printliststate(arrayofstring liststate)
+//mengeprint semua state di liststate
+{
+	int i;
+	printf("\nPassed States :\n");
+	for(i=1;i<=Neffarr(liststate);i++){
+		printf("%s\n",Elarr(liststate,i));
+	}
+}
+void addtoliststate(arrayofstring *liststate, char state[15])
+//menambahkan state ke list state
+{
+	Neffarr(*liststate)++;
+	strcpy(Elarr(*liststate,Neffarr(*liststate)),state);
+}
+
+void eraseliststate(arrayofstring *liststate)
+//mendelete semua elemen liststate
+{
+	Neffarr(*liststate)=0;
+}
