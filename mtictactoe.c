@@ -44,6 +44,7 @@ int main()
 		getinput(&outinput,1,4);
 			if(outinput==1||outinput==2){
 				end=0;
+				rotation=0;
 				eraseliststate(&liststate);
 				if (outinput==1){//player pertama, pergi ke state ke-13
 					strcpy(str(state),Elmt(matrix_trans,13,0));//load state
@@ -60,8 +61,7 @@ int main()
 						drawboard(str(state),rotation);//jika cpu pertama, harus ditentukan ke mana player memilih agar tahu rotasinya
 						printf("Your turn.\n");//dan input user tidak boleh 5 karena kotak 5 sudah terisi
 						getinput(&input,1,9);
-						if (input==1) rotation=0;
-						else if (input==3||input==6) rotation=90;
+						if (input==3||input==6) rotation=90;
 						else if (input==4||input==7) rotation=270;
 						else if (input==8||input==9) rotation=180;
 						else printf("You cannot pick filled place.\n");
