@@ -164,3 +164,19 @@ void drawtemp(sentence state, int input, int rotation)
 	temp[input-1]='X';
 	drawboard(temp,rotation);
 }
+
+void getinput(int* input,int min,int max)
+//menerima input valid yaitu dari rentang min hingga max
+{
+	boolean stop;
+	do{
+		printf("Your input : ");
+		scanf("%d",&(*input));
+		if(*input<min||*input>max){
+			printf("Wrong input. Your input should be from %d to %d\n",min,max);
+			stop=true;
+		}else{
+			stop=false;
+		}
+	}while(stop);
+}

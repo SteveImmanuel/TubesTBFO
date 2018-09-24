@@ -46,4 +46,7 @@ int findstate(char string[15],matrixofstring matrix_trans,int total);
 sentence transtate(sentence state,int input,matrixofstring matrix_trans);
 //trantition function untuk mengubah state
 
+void getinput(int* input,int min,int max);
+//menerima input valid yaitu dari rentang min hingga max
+
 #endif
