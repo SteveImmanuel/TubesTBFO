@@ -4,7 +4,7 @@
 #include "boolean.h"
 #include <string.h>
 
-#define totalstate 108
+#define totalstate 269
 #define totalcol 10
 #define size 9
 
@@ -18,7 +18,7 @@ typedef struct{
 }arrayofstring;
 
 typedef struct{
-	sentence matrix[110][15]; 
+	sentence matrix[300][15]; 
 }matrixofstring;
 
 #define Elmt(M,i,j) ((M).matrix[(i)][(j)]).strg
@@ -38,13 +38,10 @@ boolean eqstring(char ori[15],char input[15], int length);
 void printmatrix(matrixofstring matrix_trans);
 //mengeprint trantition table dari file config.txt
 
-int rotateinput(int input,int rotation);
-//rotasi input agar sesuai dengan state yang ada
-
-void drawboard(char string[15],int rotation);
+void drawboard(char string[15]);
 //menggambar board papan dari string;
 
-void drawtemp(sentence state, int input, int rotation);
+void drawtemp(sentence state, int input);
 //menggambar state sementara setelah player memilih tempat kosong
 
 int findstate(char string[15],matrixofstring matrix_trans,int total);
