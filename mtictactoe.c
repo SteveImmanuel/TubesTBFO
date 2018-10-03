@@ -6,9 +6,9 @@ int main()
 	FILE *config;
 	matrixofstring matrix_trans,finalstate;
 	char buffer[200],temp[15]="----x----";
-	sentence state,nstate;//state untuk state sekarang, nstate untuk state berikutnya
+	sentence state;//state untuk state sekarang
 	arrayofstring liststate;
-	int k,check,input,outinput,rotation=0,istate,end,c_score=0,i,j;
+	int k,check,input,outinput,rotation=0,istate,end,c_score=0,same;
 
 	config =fopen("config.txt","r");//load file konfigurasi
 	if (!config) {
@@ -57,16 +57,12 @@ int main()
 				do{
 					printf("Giliran anda.\n");
 					getinput(&input,1,9);
-					nstate=transtate(state,input,matrix_trans);
-					istate=findstate(str(nstate),finalstate,198);
-					if (eqstring(str(nstate),str(state),size)){
-						printf("Anda tidak dapat memilih petak yang sudah terisi.\n");
-						state=transtate(state,input,matrix_trans);
-						addtoliststate(&liststate,str(state));
-					}else if(istate!=-1){
+					same=strcmp(str(state),str(transtate(state,input,matrix_trans)));
+					state=transtate(state,input,matrix_trans);
+					addtoliststate(&liststate,str(state));
+					istate=findstate(str(state),finalstate,198);
+					if(istate!=-1){
 						drawtemp(state,input);
-						state=transtate(state,input,matrix_trans);
-						addtoliststate(&liststate,str(state));
 						if (str(state)[size]=='w'){
 							end=1;
 							c_score++;
@@ -76,9 +72,9 @@ int main()
 							printf("error end state not found\n");//untuk debugging
 						}
 					}else{
-						drawtemp(state, input);
-						state=transtate(state,input,matrix_trans);
-						addtoliststate(&liststate,str(state));
+						if(same==0){
+							printf("Anda tidak dapat memilih petak yang sudah terisi.\n");
+						}
 					}
 					printf("\nGiliran komputer.\n");
 					drawboard(str(state));

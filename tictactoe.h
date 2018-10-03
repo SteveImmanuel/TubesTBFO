@@ -13,7 +13,7 @@ typedef struct{
 }sentence;
 
 typedef struct{
-	sentence array[10];
+	sentence array[100];
 	int n;
 }arrayofstring;
 
